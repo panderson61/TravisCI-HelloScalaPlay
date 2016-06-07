@@ -9,7 +9,7 @@ class StackSpec extends PlaySpec {
       stack.push(1)
       stack.push(2)
       stack.pop() mustBe 2
-      stack.pop() mustBe 1
+      stack.pop() mustBe 2
     }
     "throw NoSuchElementException if an empty stack is popped" in {
       val emptyStack = new Stack[Int]
