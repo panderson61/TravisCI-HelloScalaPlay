@@ -6,4 +6,7 @@ jdk:
   - oraclejdk8
 
 notifications:
-  email: false
+  email:
+    recipients:
+      - jreyes@avetta.com
+
