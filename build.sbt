@@ -1,4 +1,4 @@
-name := "Play2Template"
+name := "TravisCI-HelloScalaPlay"
 
 version := "1.0"
 
