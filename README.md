@@ -1,1 +1,1 @@
-# Play2Template
+# TravisCI-HelloScalaPlay
