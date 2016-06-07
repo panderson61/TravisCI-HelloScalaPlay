@@ -11,7 +11,7 @@ before script:
   - unzip -q play-${PLAY_VERSION}.zip
 
 script:
-  - sbt test
+  - activator test
 
 notifications:
   email: false
