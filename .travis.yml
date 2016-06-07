@@ -1,17 +1,11 @@
 language: scala
 scala:
-  - 2.10.4
+  - 2.11.7
 jdk:
   - openjdk7
-env:
- - PLAY_VERSION=2.5.3
-
-before script:
-  - wget http://downloads.typesafe.com/play/${PLAY_VERSION}/play-${PLAY_VERSION}.zip
-  - unzip -q play-${PLAY_VERSION}.zip
 
 script:
-  - activator test
+  - sbt test
 
 notifications:
   email: false
