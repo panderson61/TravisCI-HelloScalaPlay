@@ -9,38 +9,10 @@ import play.api.mvc._
 import play.api.test.Helpers._
 import controllers.Application
 
-class StackSpec extends PlaySpec {
-
-  "A Stack" must {
-    "pop values in last-in-first-out order" in {
-      val stack = new Stack[Int]
-      stack.push(1)
-      stack.push(2)
-      stack.pop() mustBe 2
-      stack.pop() mustBe 1
-    }
-    "throw NoSuchElementException if an empty stack is popped" in {
-      val emptyStack = new Stack[Int]
-      a [NoSuchElementException] must be thrownBy {
-        emptyStack.pop()
-      }
-    }
-  }
-}
-
-class NumSpec extends PlaySpec {
-
-  "A number" must {
-    "equal itself" in {
-      1+1 mustBe 2
-    }
-  }
-}
-
 class ApplicationControllerSpec extends PlaySpec with Results {
 
-  "Example Page#index" should {
-    "should ve valid" in {
+  "Application Index" should {
+    "should return Hello World" in {
       val controller = new Application
       val result: Future[Result] = controller.index.apply(FakeRequest())
       val bodyText: String = contentAsString(result)
@@ -49,6 +21,8 @@ class ApplicationControllerSpec extends PlaySpec with Results {
   }
 }
 
+
+//Default Play Framework Test (Does not work with Travis CI?)
 /*import org.specs2.mutable._
 import org.specs2.runner._
 import org.junit.runner._
