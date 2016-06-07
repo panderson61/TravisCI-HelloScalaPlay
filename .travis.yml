@@ -3,7 +3,7 @@ language: scala
 jdk:
   - oraclejdk8
 
-scrpt:
+script:
   -sbt test
 
 notifications:
