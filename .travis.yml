@@ -8,5 +8,6 @@ jdk:
 notifications:
   email:
     recipients:
-      - jreyes@avetta.com
-
+      - one@example.com
+    on_success: always # default: change
+    on_failure: always # default: always
