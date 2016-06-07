@@ -3,5 +3,8 @@ language: scala
 jdk:
   - oraclejdk8
 
+scrpt:
+  -sbt test
+
 notifications:
   email: false
