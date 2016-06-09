@@ -13,8 +13,8 @@ env:
   - secure: J83DXKf14O5LTrdnehQ6l042+QuaMy2HvpFdrffRDrrvh8w9yiTRRwTy8f0AmPvirdrUWPJhqiRdp6Ig0IzfUiotVEYS/K4j9iQYi28WDwKaxyAtrHKmW5N4LOKVMdi6V917kbef1xlOclgXpCNCjK4vjlLq0tsAJDTLItBUb0CMb1mQlbL9VuCAgwAQnBAgMWfgRiovofBz6yTfH6FU9BpxDL885cGQRMgKgKHd3seJrh2oC4sQxKL1vrBkYrdhQVGMqTNk+xiNgpElw2nNh4mweOfT+zBnz5TeCdJdCY1n+5xEVq8jrcm7q9xekbqwSehqvQKnvoaur4yHGfimyiZmlC2bkUNXcfEiqmswY2kPDK2c3B6RySdiA9woNefBJsjmgszHXWcLk2HBY3Db0F2BxS0mA574prMUMPpIzZstvJPLWOslGk7ycNzcBmlDJbuK0CWH4pc2wbLXMSeNwvu1ORent0atN6q914sJGeCg5oV+mN82uzFn+pOCWKJR1gD86QhwqayRfyUQ+NTfRNW81DMkdrD0PitgtaYg3k23xlmJ8si7hWcmoPHuySsiU8ulM/wOzH/JgbxueyCLAH9gAMAWWSfKEADXfGio443qS9WZjxQs4il2RfFV3rhpJzPHpB8mXHt1ToiE3GWh6GdSs/kYgraVncid2jFQWO8= # DOCKER_PASS
   - COMMIT=${TRAVIS_COMMIT::8}
 before_install:
-- docker build -t jayrtrooper/helloscalaplay:v1 ./target/docker/stage
-- docker run -d -p 9000:9000 jayrtrooper/helloscalaplay:v1
+- docker build -t jayrtrooper/helloscalaplay:v2 ./target/docker/stage
+- docker run -d -p 9000:9000 jayrtrooper/helloscalaplay:v2
 - docker ps -a
 notifications:
   email:
