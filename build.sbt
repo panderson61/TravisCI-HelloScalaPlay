@@ -10,4 +10,20 @@ libraryDependencies ++= Seq( jdbc , cache , ws   , specs2 % Test , "org.scalates
 
 unmanagedResourceDirectories in Test <+=  baseDirectory ( _ /"target/web/public/test" )  
 
-resolvers += "scalaz-bintray" at "https://dl.bintray.com/scalaz/releases"  
+resolvers += "scalaz-bintray" at "https://dl.bintray.com/scalaz/releases"
+
+//// Docker configuration
+
+// setting a maintainer which is used for all packaging types
+maintainer:= "JR Reyes <jayrtrooper@gmail.com>"
+
+// exposing the play ports
+dockerExposedPorts in Docker := Seq(9000, 9443)
+
+// run this with: docker run -p 9000:9000 <name>:<version>
+
+dockerRepository := Some("jayrtrooper")
+
+dockerBaseImage := "java:8"
+
+dockerUpdateLatest := true

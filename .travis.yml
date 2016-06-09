@@ -1,9 +1,20 @@
+sudo: required
+
+services:
+  - docker
+
 language: scala
+
 scala:
   - 2.11.7
 
 jdk:
   - oraclejdk8
+
+before_install:
+  - sbt docker:stage
+  - docker build -t jayrtrooper/helloscalaplay ./target/docker/stage
+  - docker run -d -p 9000:9000 jayrtrooper/helloscalaplay:v1
 
 notifications:
   email:
