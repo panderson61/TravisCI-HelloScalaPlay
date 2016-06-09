@@ -14,6 +14,7 @@ jdk:
 before_install:
   - docker build -t jayrtrooper/helloscalaplay:v1 ./target/docker/stage
   - docker run -d -p 9000:9000 jayrtrooper/helloscalaplay:v1
+  - docker ps -a
 
 notifications:
   email:
