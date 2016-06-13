@@ -1,4 +1,5 @@
 logs
+test
 project/project
 project/target
 tmp
@@ -12,5 +13,4 @@ dist
 /.project
 /RUNNING_PID
 /.settings
-
     
