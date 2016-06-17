@@ -1,6 +1,8 @@
+import ReleaseTransformations._
+
 name := "TravisCI-HelloScalaPlay"
 
-version := "1.0"
+version := (version in ThisBuild).value
 
 lazy val `play2template` = (project in file(".")).enablePlugins(PlayScala)
 
