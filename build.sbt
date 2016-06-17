@@ -1,4 +1,5 @@
 import ReleaseTransformations._
+import sbtrelease.Version
 
 name := "TravisCI-HelloScalaPlay"
 
@@ -31,6 +32,8 @@ dockerBaseImage := "java:8"
 dockerUpdateLatest := true
 
 // Auto-Update Version Test
+releaseVersion := { ver => Version(ver).map(_.withoutQualifier.string).getOrElse("")}
+
 releaseProcess := Seq[ReleaseStep](
   checkSnapshotDependencies,              // : ReleaseStep
   inquireVersions,                        // : ReleaseStep
