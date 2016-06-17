@@ -32,13 +32,13 @@ dockerBaseImage := "java:8"
 
 dockerUpdateLatest := true
 
+// Auto-Update Version Test
 releaseVersion <<= (releaseVersionBump) ( bumper=>{
   ver => Version(ver)
-         .map(_.withoutQualifier)
-         .map(_.bump(bumper).string).getOrElse(versionFormatError)
+    .map(_.withoutQualifier)
+    .map(_.bump(bumper).string).getOrElse(versionFormatError)
 })
 
-// Auto-Update Version Test
 releaseProcess := Seq[ReleaseStep](
   checkSnapshotDependencies,              // : ReleaseStep
   inquireVersions,                        // : ReleaseStep
