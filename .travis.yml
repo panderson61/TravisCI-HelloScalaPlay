@@ -23,7 +23,9 @@ notifications:
 after_success:
   - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
   - sbt docker:publishLocal
-  - docker imagess
+  - docker images
+  - docker run -p 9000:9000 --name jrci "jayrtrooper/travisci-helloscalaplay":"1.0"
+  - docker stop jrci
 #  - 'sbt docker:publish'
-before_install:
-  - npm install -g dredd@stable
+#before_install:
+#  - npm install -g dredd@stable
