@@ -26,5 +26,3 @@ after_success:
 #  - 'sbt docker:publish'
 before_install:
   - npm install -g dredd@stable
-before_script:
-  - dredd
