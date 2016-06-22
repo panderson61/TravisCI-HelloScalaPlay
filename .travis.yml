@@ -20,13 +20,15 @@ notifications:
       - one@example.com
     on_success: change
     on_failure: always
-install:
+before_install:
+  - npm update -g npm
+  - npm install -g dredd@stable
+after_success:
   - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
   - sbt docker:publishLocal
   - docker images
-  - docker run -p 9000:9000 --name jrci "jayrtrooper/travisci-helloscalaplay":"1.0"
-
-after_success:
+  - docker run -d -p 9000:9000 --name jrci "jayrtrooper/travisci-helloscalaplay":"1.0"
+  - dredd travisci-helloscalaplay.apib http://Localhost:3000
   - docker stop jrci
 #  - 'sbt docker:publish'
 #before_install:
