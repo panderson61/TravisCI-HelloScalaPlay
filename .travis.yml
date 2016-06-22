@@ -22,7 +22,8 @@ notifications:
     on_failure: always
 after_success:
   - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
-  - 'sbt docker:publish'
+  - sbt docker:publishLocal
+#  - 'sbt docker:publish'
 before_install:
   - npm install -g dredd@stable
 before_script:
