@@ -28,8 +28,8 @@ after_success:
   - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
   - sbt docker:publishLocal
   - docker images
-  - docker run -d --net=host -p 27017:27017 mongo
-  - docker run -d -p 9000:9000 --name jrci "jayrtrooper/travisci-helloscalaplay":"1.0"
+  - docker run -d --name=mongo --net=host mongo
+  - docker run -d --name jrci jayrtrooper/travisci-helloscalaplay:1.0 -Dhttp.port=9000
   - dredd travisci-helloscalaplay.apib http://localhost:9000
   - docker stop jrci
 #  - 'sbt docker:publish'
