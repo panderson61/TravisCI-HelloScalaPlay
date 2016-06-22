@@ -1,6 +1,7 @@
 sudo: required
 services:
   - docker
+  - mongodb
 language: scala
 scala:
   - 2.11.7
@@ -27,8 +28,9 @@ after_success:
   - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
   - sbt docker:publishLocal
   - docker images
+  - docker run -d --net=host -p 27017:27017 mongo
   - docker run -d -p 9000:9000 --name jrci "jayrtrooper/travisci-helloscalaplay":"1.0"
-  - dredd travisci-helloscalaplay.apib http://Localhost:3000
+  - dredd travisci-helloscalaplay.apib http://localhost:9000
   - docker stop jrci
 #  - 'sbt docker:publish'
 #before_install:
