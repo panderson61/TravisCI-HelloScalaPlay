@@ -24,7 +24,8 @@ notifications:
 before_install:
   - npm update -g npm
   - npm install -g dredd@stable
-after_success:
+script:
+  - sbt ++$TRAVIS_SCALA_VERSION test
   - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
   - sbt docker:publishLocal
   - docker images
