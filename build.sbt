@@ -4,7 +4,7 @@ import sbtrelease.ReleaseStateTransformations.{setReleaseVersion=>_,_}
 
 name := "TravisCI-HelloScalaPlay"
 
-version := (version in ThisBuild).value
+version := "1.0" //(version in ThisBuild).value
 
 lazy val `play2template` = (project in file(".")).enablePlugins(PlayScala)
 
