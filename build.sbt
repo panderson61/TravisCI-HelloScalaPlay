@@ -10,7 +10,7 @@ lazy val `play2template` = (project in file(".")).enablePlugins(PlayScala)
 
 scalaVersion := "2.11.7"
 
-libraryDependencies ++= Seq( jdbc , cache , ws   , specs2 % Test , "org.scalatestplus.play" %% "scalatestplus-play" % "1.5.0" % "test")
+libraryDependencies ++= Seq( jdbc , cache , ws   , specs2 % Test , "org.scalatestplus.play" %% "scalatestplus-play" % "1.5.0" % "test", "org.reactivemongo" %% "play2-reactivemongo" % "0.11.6.play24")
 
 unmanagedResourceDirectories in Test <+=  baseDirectory ( _ /"target/web/public/test" )  
 
@@ -32,7 +32,7 @@ dockerBaseImage := "java:8"
 
 dockerUpdateLatest := true
 
-// Auto-Update Version Test
+// SBT-Release Auto-Update Version Test
 releaseProcess := Seq[ReleaseStep](
   checkSnapshotDependencies,              // : ReleaseStep
   inquireVersions,                        // : ReleaseStep

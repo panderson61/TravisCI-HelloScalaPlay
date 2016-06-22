@@ -4,9 +4,11 @@
 
 # Home page
 GET     /                           controllers.Application.index
-GET     /version                    controllers.Application.version
+
+#Posting Service API
+GET     /posts                      controllers.Posting.getPosts(filter: Option[String])
+
+POST   /posts                       controllers.Posting.insertPost
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
-
-    
