@@ -23,7 +23,7 @@ notifications:
 after_success:
   - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
   - sbt docker:publishLocal
-  - docker ps -a
+  - docker imagess
 #  - 'sbt docker:publish'
 before_install:
   - npm install -g dredd@stable
