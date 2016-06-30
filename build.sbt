@@ -34,7 +34,7 @@ dockerUpdateLatest := true
 
 // Auto-Update Version Test
 releaseProcess := Seq[ReleaseStep](
-  //checkSnapshotDependencies,              // : ReleaseStep
+  checkSnapshotDependencies,              // : ReleaseStep
   inquireVersions,                        // : ReleaseStep
   runTest,                                // : ReleaseStep
   setReleaseVersion,                      // : ReleaseStep
