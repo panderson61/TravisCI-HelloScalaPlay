@@ -1,0 +1,46 @@
+FORMAT: 1A
+
+# TravisCI-HelloScalaPlay
+
+Basic API that outputs "Hello World".
+
+# Hello World Collection
+
+End points related to index.
+
+## Index [/]
+
+### Output Hello World [GET]
+
++ Request (text/plain)
+
++ Response 200
+
+    + Headers
+
+        content-length: 11
+        content-type: text/plain; charset=utf-8
+        connection: close
+        date: Wed, 13 Jul 2016 21:12:28 GMT
+
+    + Body
+
+            Hello World
+
+# Data Structures
+
+## homeResponse
++ hello world
+
+## PostRequest (object)
++ title: Hello (string, required) - title of post
++ body: World (string, required) - body of post
+
+## PostResponse (object)
++ id: 56c63cd51300002f006649bb (string) - id of the post
++ title: Hello (string, required) - title of post
++ body: world (string, required) - body of post
+
+## ErrorResponse (object)
++ code: 1 (number,required) - The external error code mappable to a UI message and translation.
++ message: 'Something wicked this way comes.' (string,required) - Internal facing error message.

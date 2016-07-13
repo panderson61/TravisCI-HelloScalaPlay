@@ -1,0 +1,7 @@
+version: '2'
+services:
+  travisci-helloscalaplay:
+    image: "jayrtrooper/travisci-helloscalaplay"
+    network_mode: "host"
+    environment:
+      - "JAVA_OPTS=-Dhttp.port=9200"
