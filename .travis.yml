@@ -19,7 +19,7 @@ env:
 notifications:
   email:
     recipients:
-      - bwang@avetta.com
+      - exampleg@avetta.com
     on_success: change
     on_failure: always
 after_success:
@@ -39,3 +39,5 @@ before_install:
 before_script:
   - docker version
   - docker-compose version
+  - docker-compose up
+  - docker-compose down
