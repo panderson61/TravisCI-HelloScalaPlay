@@ -14,6 +14,8 @@ env:
         JtFCD/kICkNld0VdAnCAZvTMn0Q3YEMnifbDGWnK/H1v4S4eZq0hOhxcBEheoTGo0zwI+mDSBW6zMqTCJyPgh7nDfVLVmT/htkHwOBBlS2PGQo3htapY7GaVcPQg8AvdXMSWNbONbu/Klw33Ws5UECsOHTPd35FLkpLD9+4XSIk2e45Gl7q7jMWNZydxhaXKoQig+Rqu0qXNuv5EUSGH9Hu7Wy5+4iXxEavEUIMLaFGeaSdu0jzI6CA+R+ha2M1/s4J/BS7x07YbfHmfixq9viogIxGMRg5i5gfF1ZckHyohbyVOcPqck9jn3IbtVhSaNmPOVV8CccFQVtnS6pySSI7ZCZOTX6wbKbE/e5RD4jAWJXQagQwpY81HoQusIFrNrOBZf8wSgiGnCH4wkonm52h3hNeddfq+keBv533/ieF3oIgHcsl3TeCITcqhz6qvN+IohGJCGesEw4nqizrPludBwckuAFF/+s2gB8KaVA5L30QPaBMYRG57CCx6ZtjHwQTIqvMqqQI1o2zC3Nla2IeUG8z59u3/ONlKYj+UOP6C7ljCXihEhCYgbbZFK+izERitev5McCeOwioGmny4YSfhqMzijsudv36aGf5dyc/RQxsKX4hA6J/6HuLN7BvlfP1KBqOXy94RDQiYqua3RIU/v7b40x5THhHMcMNFBag=
     - secure: >-
         J83DXKf14O5LTrdnehQ6l042+QuaMy2HvpFdrffRDrrvh8w9yiTRRwTy8f0AmPvirdrUWPJhqiRdp6Ig0IzfUiotVEYS/K4j9iQYi28WDwKaxyAtrHKmW5N4LOKVMdi6V917kbef1xlOclgXpCNCjK4vjlLq0tsAJDTLItBUb0CMb1mQlbL9VuCAgwAQnBAgMWfgRiovofBz6yTfH6FU9BpxDL885cGQRMgKgKHd3seJrh2oC4sQxKL1vrBkYrdhQVGMqTNk+xiNgpElw2nNh4mweOfT+zBnz5TeCdJdCY1n+5xEVq8jrcm7q9xekbqwSehqvQKnvoaur4yHGfimyiZmlC2bkUNXcfEiqmswY2kPDK2c3B6RySdiA9woNefBJsjmgszHXWcLk2HBY3Db0F2BxS0mA574prMUMPpIzZstvJPLWOslGk7ycNzcBmlDJbuK0CWH4pc2wbLXMSeNwvu1ORent0atN6q914sJGeCg5oV+mN82uzFn+pOCWKJR1gD86QhwqayRfyUQ+NTfRNW81DMkdrD0PitgtaYg3k23xlmJ8si7hWcmoPHuySsiU8ulM/wOzH/JgbxueyCLAH9gAMAWWSfKEADXfGio443qS9WZjxQs4il2RfFV3rhpJzPHpB8mXHt1ToiE3GWh6GdSs/kYgraVncid2jFQWO8=
+    - DOCKER_VERSION=1.10.1-0~trusty
+    - DOCKER_COMPOSE_VERSION=1.6.0
 notifications:
   email:
     recipients:
@@ -25,11 +27,17 @@ after_success:
   - 'sbt docker:publish'
 before_install:
   - npm install -g dredd@stable
-  # reinstall docker-compose at specific version
-  - sudo rm /usr/local/bin/docker-compose
-  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
-  - chmod +x docker-compose
-  - sudo mv docker-compose /usr/local/bin
+    # list docker-engine versions
+    - apt-cache madison docker-engine
+
+    # upgrade docker-engine to specific version
+    - sudo apt-get -o Dpkg::Options::="--force-confnew" install -y docker-engine=${DOCKER_VERSION}
+
+    # reinstall docker-compose at specific version
+    - sudo rm /usr/local/bin/docker-compose
+    - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+    - chmod +x docker-compose
+    - sudo mv docker-compose /usr/local/bin
 before_script:
   - docker version
   - docker-compose version
