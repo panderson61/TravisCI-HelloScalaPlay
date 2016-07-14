@@ -36,4 +36,5 @@ before_install:
   - chmod +x docker-compose
   - sudo mv docker-compose /usr/local/bin
 before_script:
-  - ssh
+  - export TAG="INT"
+  - sed -i -e "s/version := .*/version := $TAG/g" build.sbt
