@@ -1,7 +1,7 @@
 version: '2'
 services:
   authyservice:
-    image: "jayrtrooper/authyservice"
+    image: "panderson61/authyservice"
     network_mode: "host"
     environment:
       - "JAVA_OPTS=-Dhttp.port=9200"
