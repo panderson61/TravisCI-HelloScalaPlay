@@ -2,7 +2,7 @@ import ReleaseTransformations._
 import sbtrelease._
 import sbtrelease.ReleaseStateTransformations.{setReleaseVersion=>_,_}
 
-name := "TravisCI-HelloScalaPlay"
+name := "authyservice"
 
 version := (version in ThisBuild).value
 
@@ -19,14 +19,14 @@ resolvers += "scalaz-bintray" at "https://dl.bintray.com/scalaz/releases"
 //// Docker configuration
 
 // setting a maintainer which is used for all packaging types
-maintainer:= "JR Reyes <jayrtrooper@gmail.com>"
+maintainer:= "Paul Anderson <panderson61@yahoo.com>"
 
 // exposing the play ports
 dockerExposedPorts in Docker := Seq(9000, 9443)
 
 // run this with: docker run -p 9000:9000 <name>:<version>
 
-dockerRepository := Some("jayrtrooper")
+dockerRepository := Some("panderson61")
 
 dockerBaseImage := "java:8"
 

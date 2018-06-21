@@ -1,7 +1,7 @@
 version: '2'
 services:
-  travisci-helloscalaplay:
-    image: "jayrtrooper/travisci-helloscalaplay"
+  authyservice:
+    image: "jayrtrooper/authyservice"
     network_mode: "host"
     environment:
       - "JAVA_OPTS=-Dhttp.port=9200"
