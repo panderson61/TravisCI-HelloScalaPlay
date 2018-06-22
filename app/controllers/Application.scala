@@ -20,7 +20,6 @@ class Application extends Controller with RequestLogging {
   }
 
   def version = RequestLoggingAction {
-    //Try {
     try {
 
       import scala.collection.JavaConversions._
@@ -32,22 +31,19 @@ class Application extends Controller with RequestLogging {
       Ok(Json.parse(jsonVersion))
     }
     catch {
-      // case e: Any => exceptionHandler(e)
-      // case e: RuntimeException => requestLogger.error (e.getMessage)
-      //val jsonVersion = "{" + "buildId:1, " + "commit:1" + "tag:v1.0.0" + "}"
+      // TODO This maybe should be a Fatal Error
       case e: Exception => InternalServerError(Json.parse("{" + "buildId:1, " + "commit:1" + "tag:v1.0.0" + "}"))
-      //Failure(Json.parse(jsonVersion))
     }
   }
 
-  def health = Cached.everything(_=> "health-check", play.Play.application.configuration.getInt("health.check.cache.duration")) {
+  def health = Cached.everything(_ => "health-check", play.Play.application.configuration.getInt("health.check.cache.duration")) {
     RequestLoggingAction {
       try {
-        val healthCheckResponse =  HealthCheck.runHealthCheck
+        val healthCheckResponse = HealthCheck.runHealthCheck
 
         requestLogger.debug(Json.toJson(healthCheckResponse).toString)
 
-        if(healthCheckResponse.status.isDefined) {
+        if (healthCheckResponse.status.isDefined) {
           Ok(Json.toJson(healthCheckResponse))
         }
         else {
@@ -59,14 +55,4 @@ class Application extends Controller with RequestLogging {
       }
     }
   }
-
-//  private def exceptionHandler(exception: Any): Result = {
-//
-    //Log exception
-//    Exception.ignoring(classOf[Any]) {
-//      exception match {
-//        case e: RuntimeException => requestLogger.error (e.getMessage)
-//      }
-//    }
-//  }
 }
