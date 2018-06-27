@@ -9,6 +9,13 @@ import models.User
 
 class Authentication extends Controller {
 
+  //val login = Form(
+  //  mapping(
+  //    "username" -> text,
+  //    "password" -> text,
+  //    "email"    -> text
+  //  )(User.apply)(User.unapply)
+  //)
   val login = Form(
     tuple(
       "username" -> text,
@@ -23,6 +30,7 @@ class Authentication extends Controller {
     */
   def loginForm = Action { implicit request =>
     Ok(html.login(login))
+    //Ok(html.login(tuple("", "")))
   }
 
   /**
@@ -37,14 +45,14 @@ class Authentication extends Controller {
   /**
     * Handle login form submission.
     */
-  def authenticate = Action {
-    Ok("authenticated")
-  }
-  //def authenticate = Action { implicit request =>
-  //  loginForm.bindFromRequest.fold(
-  //    formWithErrors => BadRequest(html.login(formWithErrors)),
-  //    user => Redirect(routes.Restricted.index()).withSession("email" -> user._1)
-  //  )
+  //def authenticate = Action {
+  //  Ok("authenticated")
   //}
+  def authenticate = Action { implicit request =>
+    login.bindFromRequest.fold(
+      formWithErrors => BadRequest(html.login(formWithErrors)),
+      user => Redirect(routes.Restricted.index()).withSession("email" -> user._2)
+    )
+  }
 
 }

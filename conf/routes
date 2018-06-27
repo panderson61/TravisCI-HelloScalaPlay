@@ -6,10 +6,16 @@
 GET     /                           controllers.Application.index
 
 # External routes
-GET     /authyservice/v1/health     controllers.Application.health
-GET     /authyservice/v1/version    controllers.Application.version
+GET     /authyservice/v1/health     controllers.Health.health
+GET     /authyservice/v1/version    controllers.Health.version
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
 
-    
+# Authentication
+GET     /login                      controllers.Authentication.loginForm
+POST    /login                      controllers.Authentication.authenticate
+GET     /logout                     controllers.Authentication.logout
+
+# Restricted content
+GET     /restricted                 controllers.Restricted.index
