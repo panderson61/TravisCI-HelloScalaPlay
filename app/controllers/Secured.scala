@@ -16,7 +16,7 @@ trait Secured {
     * Not authorized, forward to login
     */
   private def onUnauthorized(request: RequestHeader) = {
-    Results.Redirect(routes.Authentication.loginForm)
+    Results.Redirect(routes.Authentication.login)
   }
 
   /**

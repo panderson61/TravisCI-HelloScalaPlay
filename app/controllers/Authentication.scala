@@ -16,7 +16,7 @@ class Authentication extends Controller {
   //    "email"    -> text
   //  )(User.apply)(User.unapply)
   //)
-  val login = Form(
+  val loginForm = Form(
     tuple(
       "username" -> text,
       "password" -> text
@@ -28,16 +28,15 @@ class Authentication extends Controller {
   /**
     * Login page.
     */
-  def loginForm = Action { implicit request =>
-    Ok(html.login(login))
-    //Ok(html.login(tuple("", "")))
+  def login = Action { implicit request =>
+    Ok(html.login(loginForm))
   }
 
   /**
     * Logout and clean the session.
     */
   def logout = Action {
-    Redirect(routes.Authentication.loginForm).withNewSession.flashing(
+    Redirect(routes.Authentication.login).withNewSession.flashing(
       "success" -> "You've been logged out"
     )
   }
@@ -45,14 +44,16 @@ class Authentication extends Controller {
   /**
     * Handle login form submission.
     */
-  //def authenticate = Action {
-  //  Ok("authenticated")
-  //}
   def authenticate = Action { implicit request =>
-    login.bindFromRequest.fold(
+    loginForm.bindFromRequest.fold(
       formWithErrors => BadRequest(html.login(formWithErrors)),
       user => Redirect(routes.Restricted.index()).withSession("email" -> user._2)
     )
   }
 
+  def send2FApprovalRequest(user: User) : Boolean = {true}
+
+  def sendOneTouchApprovalRequest(user: User) : Boolean = {true}
+
+  def sendSmsTokenRequest(user: User) : Boolean = {true}
 }

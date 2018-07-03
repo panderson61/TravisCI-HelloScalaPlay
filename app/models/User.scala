@@ -3,13 +3,12 @@ package models
 import play.api.db._
 import play.api.Play.current
 
-//import anorm._
-//import anorm.SqlParser._
-
 case class User(
   username: String,
   password: String,
-  email: String
+  email: String,
+  countryCode: String,
+  phoneNumber: String
 )
 
 object User {
@@ -20,7 +19,7 @@ object User {
 
   def findByUsername(username: String): Option[User] = {
     username match {
-      case "foo" => Some(User("foo", "foo", "user@foo.com"))
+      case "foo" => Some(User("foo", "foo", "user@foo.com", "1", "9876543210"))
       case _ => None
     }
   }
@@ -31,7 +30,19 @@ object User {
 
   def matchPassword(password: String): Option[User] = {
     password match {
-      case "foo" => Some(User("foo", "foo", "user@foo.com"))
+      case "foo" => Some(User("foo", "foo", "user@foo.com", "1", "9876543210"))
+      case _ => None
+    }
+  }
+
+  def verifyToken(username: String, token: String): Option[User] = {
+    findByUsername(username)
+    matchToken(token)
+  }
+
+  def matchToken(token: String): Option[User] = {
+    token match {
+      case "foo" => Some(User("foo", "foo", "user@foo.com", "1", "9876543210"))
       case _ => None
     }
   }

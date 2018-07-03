@@ -11,6 +11,6 @@ import java.math.BigInteger
 class Application @Inject() (cache: CacheApi) extends Controller {
 
   def index = Action {
-    Ok(views.html.index("authyservice"))
+    Ok(views.html.index(""))
   }
 }

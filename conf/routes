@@ -13,9 +13,13 @@ GET     /authyservice/v1/version    controllers.Health.version
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
 
 # Authentication
-GET     /login                      controllers.Authentication.loginForm
+GET     /login                      controllers.Authentication.login
 POST    /login                      controllers.Authentication.authenticate
 GET     /logout                     controllers.Authentication.logout
 
 # Restricted content
 GET     /restricted                 controllers.Restricted.index
+
+# Token
+GET     /token                      controllers.Token.getTokenForm
+POST    /token                      controllers.Token.postTokenForm
