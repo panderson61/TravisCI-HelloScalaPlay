@@ -20,6 +20,9 @@ GET     /logout                     controllers.Authentication.logout
 # Restricted content
 GET     /restricted                 controllers.Restricted.index
 
-# Token
-GET     /token                      controllers.Token.getTokenForm
-POST    /token                      controllers.Token.postTokenForm
+# Authy
+GET     /authyservice/v1/token      controllers.Token.getTokenForm
+POST    /authyservice/v1/token      controllers.Token.postTokenForm
+GET     /authyservice/v1/userreg    controllers.AuthyUserRegistration.getUserRegistrationForm
+POST    /authyservice/v1/userreg    controllers.AuthyUserRegistration.postUserRegistrationForm
+

@@ -2,11 +2,15 @@ package controllers
 
 import play.api.mvc._
 import play.api.libs.json._
+import play.api.data._
+import play.api.data.Forms._
 import play.api.Logger
 import _root_.util.{ErrorCodes, RequestLogging}
 import models.framework.{EmptyServiceResponse, WsException}
 import models.authy.AuthyUserRegistrationRequest
+import models.User
 import services.AuthyService
+import views.html
 
 import scala.util.control.Exception
 

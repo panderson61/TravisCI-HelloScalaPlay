@@ -2,7 +2,7 @@ package models.authy
 
 import play.api.libs.json._
 
-case class AuthyUserRegistrationResponse(token: String)
+case class AuthyUserRegistrationResponse(authyId: String)
 
 object AuthyUserRegistrationResponse {
 

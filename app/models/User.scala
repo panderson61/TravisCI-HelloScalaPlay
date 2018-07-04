@@ -46,6 +46,13 @@ object User {
       case _ => None
     }
   }
+
+  def matchCC(country_code: String): Option[User] = {
+    country_code match {
+      case "1" => Some(User("foo", "foo", "user@foo.com", "1", "9876543210"))
+      case _ => None
+    }
+  }
   //def matchPassword(password: String) : Boolean = {
   //  password == "foo"
   //}

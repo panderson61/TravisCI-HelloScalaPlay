@@ -1,0 +1,38 @@
+@(form: Form[(String,String,String)])(implicit flash: Flash)
+
+@main("AuthyService") {
+
+<h1>AuthyService User Registration Page</h1>
+
+<p>Please register your Authy User.</p>
+
+@helper.form(routes.AuthyUserRegistration.postUserRegistrationForm) {
+
+@form.globalError.map { error =>
+<p class="error">
+    @error.message
+</p>
+}
+
+@flash.get("success").map { message =>
+<p class="success">
+    @message
+</p>
+}
+
+<p>
+    <input type="username" name="username" placeholder="Username" id="username" value="@form("username").value">
+</p>
+<p>
+    <input type="cellphone" name="cellphone" id="cellphone" placeholder="Cellphone" value="@form("cellphone").value">
+</p>
+<p>
+    <input type="country_code" name="country_code" id="country_code" placeholder="Country Code" value="@form("country_code").value">
+</p>
+<p>
+    <button type="submit" id="submitbutton">Submit</button>
+</p>
+
+}
+
+}
