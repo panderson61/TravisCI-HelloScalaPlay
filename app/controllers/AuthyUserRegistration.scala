@@ -36,16 +36,23 @@ class AuthyUserRegistration extends Controller {
     * POST userRegistration form.
     */
   def postUserRegistrationForm = Action { implicit request =>
-    try {
-      val authyData = Json.fromJson[AuthyUserRegistrationRequest](request.body.asJson.get).get
+
+  //  userRegistrationForm.bindFromRequest.fold(
+  //    formWithErrors => BadRequest(html.userregistration(formWithErrors)),
+      //user => Redirect(routes.Restricted.index()).withSession("username" -> user._1)
+  //    user => Redirect(routes.Application.index()).withSession("username" -> user._1)
+  //  )
+  //  try {
+      val authyData = AuthyUserRegistrationRequest("u","p","c")
+      //val authyData = Json.fromJson[AuthyUserRegistrationRequest("u","p","c")](request.body.asJson.get).get
       val authyResponse = AuthyService.authyUserRegistration(authyData)
       Ok(Json.toJson(authyResponse))
-    }
-    catch {
-      case e: Any => {
-        exceptionHandler(e)
-      }
-    }
+  //  }
+  //  catch {
+  //    case e: Any => {
+  //      exceptionHandler(e)
+  //    }
+  //  }
 
   //  userRegistrationForm.bindFromRequest.fold(
   //    formWithErrors => BadRequest(html.userregistration(formWithErrors)),
