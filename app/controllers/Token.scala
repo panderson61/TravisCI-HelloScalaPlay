@@ -6,8 +6,21 @@ import play.api.data._
 import play.api.data.Forms._
 import views._
 import models.User
+import models.authy._
+import services.AuthyService
 
 class Token extends Controller {
+
+  /**
+    * Use SMS to send a token to the user's cellphone
+    */
+  def sendToken = Action {
+    // TODO get this data from model.User
+    val authyData = AuthySendSMSTokenRequest("u","p","c")
+    val authyResponse = AuthyService.authySendSMSToken(authyData)
+    // TODO put the expected response into model.User
+    Redirect(routes.Token.getTokenForm)
+  }
 
   /**
     * GET token form.

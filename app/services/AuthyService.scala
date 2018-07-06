@@ -1,5 +1,6 @@
 package services
 
+import java.io.FileInputStream
 import java.net.URLDecoder
 
 import play.api.libs.json._
@@ -21,15 +22,18 @@ object AuthyService {
   private[this] val email = "panderson61@yahoo.com"
   private[this] val cellphone = "7146146687"
   private[this] val country_code = "1"
-  private[this] val authyApiKey = play.Play.application.configuration.getString("avetta_auth_api_key")
+  private[this] val authyApiKey = play.Play.application.configuration.getString("avetta.auth.api.key")
 
   val authyUrl = "https://api.authy.com"
   val authyTimeout = Duration(20, "seconds")
+  //val props = new java.util.Properties
+  //props.load(new FileInputStream(Play.application.path + "/conf/.authy_key"))
+  //private[this] val authyApiKey = props.getProperty(avetta_auth_api_key)
 
   def authyUserRegistration(authyData: AuthyUserRegistrationRequest): AuthyUserRegistrationResponse = {
-    //val authyUserRegistrationUrl = authyUrl + "/protected/json/users/new"
-    val authyUserRegistrationUrl = "https://api.authy.com/protected/json/users/new"
+    val authyUserRegistrationUrl = authyUrl + "/protected/json/users/new"
 
+    //TODO build nameValuePairs from authyData
     val nameValuePairs = Map(
       (EMAIL, Seq(email)),
       (CELLPHONE, Seq(cellphone)),
@@ -82,6 +86,39 @@ object AuthyService {
         //  }
         //}
       //case _ => throw new Exception("Authy Error - Unable to reach server")
+    }
+  }
+
+  def authySendSMSToken(authyData: AuthySendSMSTokenRequest): AuthySendSMSTokenResponse = {
+    val authySendSMSTokenUrl = authyUrl + "/protected/json/users/new"
+
+    //TODO build nameValuePairs from authyData
+    val nameValuePairs = Map(
+      (EMAIL, Seq(email)),
+      (CELLPHONE, Seq(cellphone)),
+      (COUNTRY_CODE, Seq(country_code))
+    )
+
+    val authyFuture = WS.url(authySendSMSTokenUrl)
+      .withHeaders(("X-Authy-API-Key", authyApiKey))
+      .withRequestTimeout(authyTimeout)
+      .post(nameValuePairs)
+
+    val authySendSMSTokenResponse = Await.result(authyFuture, authyTimeout)
+
+    authySendSMSTokenResponse.status match {
+      case 200 => {
+        val authyResponse = Json.parse(authySendSMSTokenResponse.body)
+        val authyId = (authyResponse \ "user" \ "id").get.toString()
+        AuthySendSMSTokenResponse(
+          authyId = authyId
+        )
+      }
+      case _ => {
+        AuthySendSMSTokenResponse(
+          authyId = authySendSMSTokenResponse.body
+        )
+      }
     }
   }
 

@@ -6,6 +6,6 @@ case class AuthyUserRegistrationResponse(authyId: String)
 
 object AuthyUserRegistrationResponse {
 
-  implicit val AuthyUserRegistrationResponseFormat = Json.format[AuthyUserRegistrationResponse]
+  implicit val authyUserRegistrationResponseFormat = Json.format[AuthyUserRegistrationResponse]
 
 }

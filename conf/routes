@@ -21,6 +21,7 @@ GET     /logout                     controllers.Authentication.logout
 GET     /restricted                 controllers.Restricted.index
 
 # Authy
+GET     /authyservice/v1/sendtoken  controllers.Token.sendToken
 GET     /authyservice/v1/token      controllers.Token.getTokenForm
 POST    /authyservice/v1/token      controllers.Token.postTokenForm
 GET     /authyservice/v1/userreg    controllers.AuthyUserRegistration.getUserRegistrationForm
