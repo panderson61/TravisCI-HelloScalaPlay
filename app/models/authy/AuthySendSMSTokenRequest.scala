@@ -2,10 +2,8 @@ package models.authy
 
 import play.api.libs.json._
 
-case class AuthySendSMSTokenRequest(email: String,
-                                        cellphone: String,
-                                        countryCode: String
-                                       )
+case class AuthySendSMSTokenRequest(authyId: String
+                                   )
 
 
 object AuthySendSMSTokenRequest {

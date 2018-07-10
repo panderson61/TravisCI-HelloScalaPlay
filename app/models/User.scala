@@ -8,7 +8,9 @@ case class User(
   password: String,
   email: String,
   countryCode: String,
-  phoneNumber: String
+  phoneNumber: String,
+  authyId: String,
+  smsToken: String
 )
 
 object User {
@@ -19,7 +21,7 @@ object User {
 
   def findByUsername(username: String): Option[User] = {
     username match {
-      case "foo" => Some(User("foo", "foo", "user@foo.com", "1", "9876543210"))
+      case "panderson" => Some(User("panderson", "foo", "panderson61@yahoo.com", "1", "7146146687", "38131306", "123"))
       case _ => None
     }
   }
@@ -30,7 +32,7 @@ object User {
 
   def matchPassword(password: String): Option[User] = {
     password match {
-      case "foo" => Some(User("foo", "foo", "user@foo.com", "1", "9876543210"))
+      case "foo" => Some(User("panderson", "foo", "panderson61@yahoo.com", "1", "7146146687", "38131306", "123"))
       case _ => None
     }
   }
@@ -42,14 +44,14 @@ object User {
 
   def matchToken(token: String): Option[User] = {
     token match {
-      case "foo" => Some(User("foo", "foo", "user@foo.com", "1", "9876543210"))
+      case "123" => Some(User("panderson", "foo", "panderson61@yahoo.com", "1", "7146146687", "38131306", "123"))
       case _ => None
     }
   }
 
   def matchCC(country_code: String): Option[User] = {
     country_code match {
-      case "1" => Some(User("foo", "foo", "user@foo.com", "1", "9876543210"))
+      case "1" => Some(User("panderson", "foo", "panderson61@yahoo.com", "1", "7146146687", "38131306", "123"))
       case _ => None
     }
   }

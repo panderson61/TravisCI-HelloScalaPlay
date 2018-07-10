@@ -17,11 +17,17 @@ object AuthyService {
   private[this] val CELLPHONE = "user[cellphone]"
   private[this] val COUNTRY_CODE = "user[country_code]"
   private[this] val AUTHYID = "string"
+  private[this] val VIA = "via"
+  private[this] val LOCALE = "locale"
+  private[this] val VERIFICATION_CODE = "verification_code"
 
   //private[this] val email = play.Play.application.configuration.getString("panderson@avetta.com")
   private[this] val email = "panderson61@yahoo.com"
   private[this] val cellphone = "7146146687"
   private[this] val country_code = "1"
+  private[this] val via_sms = "sms"
+  private[this] val locale_en = "en"
+
   private[this] val authyApiKey = play.Play.application.configuration.getString("avetta.auth.api.key")
 
   val authyUrl = "https://api.authy.com"
@@ -90,33 +96,85 @@ object AuthyService {
   }
 
   def authySendSMSToken(authyData: AuthySendSMSTokenRequest): AuthySendSMSTokenResponse = {
-    val authySendSMSTokenUrl = authyUrl + "/protected/json/users/new"
+    val authySendSMSTokenUrl = authyUrl + "/protected/json/sms/" + authyData.authyId + "?force=true"
+    println(authySendSMSTokenUrl.toString())
 
     //TODO build nameValuePairs from authyData
-    val nameValuePairs = Map(
-      (EMAIL, Seq(email)),
-      (CELLPHONE, Seq(cellphone)),
-      (COUNTRY_CODE, Seq(country_code))
-    )
+    //val nameValuePairs = Map(
+    //  (VIA, Seq(via_sms)),
+    //  (LOCALE, Seq(locale_en)),
+    //  (CELLPHONE, Seq(cellphone)),
+    //  (COUNTRY_CODE, Seq(country_code))
+    //)
 
     val authyFuture = WS.url(authySendSMSTokenUrl)
       .withHeaders(("X-Authy-API-Key", authyApiKey))
       .withRequestTimeout(authyTimeout)
-      .post(nameValuePairs)
+      .get
 
     val authySendSMSTokenResponse = Await.result(authyFuture, authyTimeout)
+    println(authySendSMSTokenResponse.status.toString())
+    println(authySendSMSTokenResponse.body.toString())
 
     authySendSMSTokenResponse.status match {
       case 200 => {
         val authyResponse = Json.parse(authySendSMSTokenResponse.body)
-        val authyId = (authyResponse \ "user" \ "id").get.toString()
+      //  //TODO Parse needed response values
+      //  val authyId = (authyResponse \ "user" \ "id").get.toString()
         AuthySendSMSTokenResponse(
-          authyId = authyId
+          success = (authyResponse \ "success").get.toString(),
+          message = (authyResponse \ "message").get.toString(),
+          cellphone = (authyResponse \ "cellphone").get.toString()
         )
       }
       case _ => {
         AuthySendSMSTokenResponse(
-          authyId = authySendSMSTokenResponse.body
+          success = "false",
+          message = "messageText",
+          cellphone = "9876543210"
+        )
+      }
+    }
+  }
+
+  def authyCheckSMSToken(authyData: AuthyCheckSMSTokenRequest): AuthyCheckSMSTokenResponse = {
+    val authyCheckSMSTokenUrl = authyUrl + "/protected/json/verify/" + authyData.verificationCode + "/" + authyData.authyId
+
+    val authyFuture = WS.url(authyCheckSMSTokenUrl)
+      .withHeaders(("X-Authy-API-Key", authyApiKey))
+      .withRequestTimeout(authyTimeout)
+      .get
+
+    val authyCheckSMSTokenResponse = Await.result(authyFuture, authyTimeout)
+    println(authyCheckSMSTokenResponse.status.toString())
+    println(authyCheckSMSTokenResponse.body.toString())
+
+    authyCheckSMSTokenResponse.status match {
+      case 200 => {
+        val authyResponse = Json.parse(authyCheckSMSTokenResponse.body)
+
+        val mySuccess = trimstr((authyResponse \ "success").get.toString())
+        val myMessage = trimstr((authyResponse \ "message").get.toString())
+        val myToken = trimstr((authyResponse \ "token").get.toString())
+
+        println("resp:" + mySuccess + ":" + myMessage + ":" + myToken)
+
+        //AuthyCheckSMSTokenResponse(
+        //  success = (authyResponse \ "success").get.toString(),
+        //  message = (authyResponse \ "message").get.toString(),
+        //  token = (authyResponse \ "token").get.toString()
+        //)
+        AuthyCheckSMSTokenResponse(
+          mySuccess,
+          myMessage,
+          myToken
+        )
+      }
+      case _ => {
+        AuthyCheckSMSTokenResponse(
+          success = "false",
+          message = "messageText",
+          token = "9876543210"
         )
       }
     }
@@ -127,6 +185,13 @@ object AuthyService {
       val nameValuePair = result.split("=")
       (nameValuePair.headOption.getOrElse(""), URLDecoder.decode(nameValuePair(1), "UTF-8"))
     }).toMap
+  }
+
+  def trimstr(instr: String): String = {
+    if (instr.length() >= 2 && instr.charAt(0) == '"' && instr.charAt(instr.length() - 1) == '"')
+      instr.substring(1, instr.length() - 1)
+    else
+      instr
   }
 
 }
