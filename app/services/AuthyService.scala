@@ -3,6 +3,7 @@ package services
 import java.io.FileInputStream
 import java.net.URLDecoder
 
+import models.User
 import play.api.libs.json._
 import models.authy._
 import play.api.Play.current
@@ -38,12 +39,12 @@ object AuthyService {
 
   def authyUserRegistration(authyData: AuthyUserRegistrationRequest): AuthyUserRegistrationResponse = {
     val authyUserRegistrationUrl = authyUrl + "/protected/json/users/new"
+    println("Calling " + authyUserRegistrationUrl.toString())
 
-    //TODO build nameValuePairs from authyData
     val nameValuePairs = Map(
-      (EMAIL, Seq(email)),
-      (CELLPHONE, Seq(cellphone)),
-      (COUNTRY_CODE, Seq(country_code))
+      (EMAIL, Seq(authyData.email)),
+      (CELLPHONE, Seq(authyData.cellphone)),
+      (COUNTRY_CODE, Seq(authyData.countryCode))
     )
 
     val authyFuture = WS.url(authyUserRegistrationUrl)
@@ -55,14 +56,7 @@ object AuthyService {
 
     authyUserRegistrationResponse.status match {
       case 200 => {
-        //var authyId = "init"
-        //val status = parseResults(authyUserRegistrationResponse.body).get("ACK").asInstanceOf[Some[String]].get
-        //status match {
-        //case "Success" => {
-        //val authyId = parseResults(authyUserRegistrationResponse.body).get("authyId").asInstanceOf[Some[String]].get
         val authyResponse = Json.parse(authyUserRegistrationResponse.body)
-        //val authyId = (authyResponse \ "user" \ "id").as[String]
-        //val authyId = (authyResponse \ "user" \ "id").toString()
         val authyId = (authyResponse \ "user" \ "id").get.toString()
         //val authyId =(authyResponse\"user"\"id").asOpt.map(_.extract[String]).getOrElse("xxx")
         //val authyId = (authyResponse \\ "id").toString()
@@ -72,10 +66,19 @@ object AuthyService {
         //  case s: JsSuccess[String] => authyId = s.get
         //  case e: JsError => println("Errors: " + JsError.toJson(e).toString())
         //}
+        println("authService Registering Authy User")
+        val authyUser = User(
+          authyData.username,
+          authyData.password,
+          authyData.email,
+          authyData.countryCode,
+          authyData.cellphone,
+          authyId,
+          authyData.useAuthy
+        )
+        User.create(authyUser)
         AuthyUserRegistrationResponse(
           authyId = authyId
-          //authyId = authyUser
-          //authyId = message
         )
       }
       case _ => {
@@ -97,7 +100,7 @@ object AuthyService {
 
   def authySendSMSToken(authyData: AuthySendSMSTokenRequest): AuthySendSMSTokenResponse = {
     val authySendSMSTokenUrl = authyUrl + "/protected/json/sms/" + authyData.authyId + "?force=true"
-    println(authySendSMSTokenUrl.toString())
+    println("Calling " + authySendSMSTokenUrl.toString())
 
     //TODO build nameValuePairs from authyData
     //val nameValuePairs = Map(
@@ -130,7 +133,7 @@ object AuthyService {
       case _ => {
         AuthySendSMSTokenResponse(
           success = "false",
-          message = "messageText",
+          message = "unexpected error",
           cellphone = "9876543210"
         )
       }
@@ -146,8 +149,8 @@ object AuthyService {
       .get
 
     val authyCheckSMSTokenResponse = Await.result(authyFuture, authyTimeout)
-    println(authyCheckSMSTokenResponse.status.toString())
-    println(authyCheckSMSTokenResponse.body.toString())
+    println("authyCheckSMSTokenResponse status: " + authyCheckSMSTokenResponse.status.toString())
+    println("authyCheckSMSTokenResponse body: " + authyCheckSMSTokenResponse.body.toString())
 
     authyCheckSMSTokenResponse.status match {
       case 200 => {
@@ -173,7 +176,7 @@ object AuthyService {
       case _ => {
         AuthyCheckSMSTokenResponse(
           success = "false",
-          message = "messageText",
+          message = "unexpected error",
           token = "9876543210"
         )
       }

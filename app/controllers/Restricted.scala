@@ -11,6 +11,7 @@ class Restricted extends Controller with Secured {
     */
   def index = IsAuthenticated { username =>
     _ =>
+      println("Restriced IsAuthenticated username: " + username)
       User.findByUsername(username).map {
         user => Ok(html.restricted(user))
       }.getOrElse(Forbidden)

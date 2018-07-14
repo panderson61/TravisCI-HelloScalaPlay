@@ -47,13 +47,17 @@ class Authentication extends Controller {
   def authenticate = Action { implicit request =>
     loginForm.bindFromRequest.fold(
       formWithErrors => BadRequest(html.login(formWithErrors)),
-      user => Redirect(routes.Restricted.index()).withSession("email" -> user._2)
+      user => {
+        val mySessionToken = user._1
+        println("Login session: " + user.toString() + "and token: " + mySessionToken)
+        Redirect(routes.Restricted.index()).withSession("username" -> mySessionToken)
+      }
     )
   }
 
-  def send2FApprovalRequest(user: User) : Boolean = {true}
+//  def send2FApprovalRequest(user: User) : Boolean = {true}
 
-  def sendOneTouchApprovalRequest(user: User) : Boolean = {true}
+//  def sendOneTouchApprovalRequest(user: User) : Boolean = {true}
 
-  def sendSmsTokenRequest(user: User) : Boolean = {true}
+//  def sendSmsTokenRequest(user: User) : Boolean = {true}
 }

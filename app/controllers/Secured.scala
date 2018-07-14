@@ -10,12 +10,14 @@ trait Secured {
   /**
     * Retrieve the connected user's email
     */
-  private def username(request: RequestHeader) = request.session.get("email")
+//  private def username(request: RequestHeader) = request.session.get("email")
+  private def mySessionToken(request: RequestHeader) = request.session.get("username")
 
   /**
     * Not authorized, forward to login
     */
   private def onUnauthorized(request: RequestHeader) = {
+    println("Secured UnAuthorized access!")
     Results.Redirect(routes.Authentication.login)
   }
 
@@ -23,7 +25,8 @@ trait Secured {
     * Action for authenticated users.
     */
   def IsAuthenticated(f: => String => Request[AnyContent] => Result) = {
-    Security.Authenticated(username, onUnauthorized) { user =>
+    println("Secured IsAuthenticated")
+    Security.Authenticated(mySessionToken, onUnauthorized) { user =>
       Action(request => f(user)(request))
     }
   }

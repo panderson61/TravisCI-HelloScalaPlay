@@ -17,10 +17,6 @@ class Token extends Controller {
   def sendToken = Action {
     // TODO get this data from model.User
     val myAuthyId = User.findByUsername("panderson").get.authyId
-    //val authyData = AuthySendSMSTokenRequest(myUser.authyId)
-    //val authyData = AuthySendSMSTokenRequest("38131306")
-    //val authyResponse = AuthyService.authySendSMSToken(authyData)
-    //val authyResponse = AuthyService.authySendSMSToken(AuthySendSMSTokenRequest("38131306"))
     val authyResponse = AuthyService.authySendSMSToken(AuthySendSMSTokenRequest(myAuthyId))
     // TODO put the expected response into model.User
     Redirect(routes.Token.getTokenForm)
@@ -41,14 +37,10 @@ class Token extends Controller {
       "username" -> text,
       "token" -> text
     ) verifying ("Invalid username or token", result => result match {
-      //case (username, token) => User.verifyToken(username, token).isDefined
       case (username, token) =>
         val myAuthyId = User.findByUsername(username).get.authyId
         val authyData = AuthyCheckSMSTokenRequest(myAuthyId, token)
         val authyResp = AuthyService.authyCheckSMSToken(authyData)
-        println("Success is " + authyResp.success.toString())
-        println("Message is " + authyResp.message.toString())
-        println("Token is " + authyResp.token.toString())
         authyResp.success.toString() == "true"
     })
   )
@@ -58,7 +50,10 @@ class Token extends Controller {
   def postTokenForm = Action { implicit request =>
     tokenForm.bindFromRequest.fold(
       formWithErrors => BadRequest(html.token(formWithErrors)),
-      user => Redirect(routes.Restricted.index()).withSession("email" -> user._2)
+      user => {
+        println("Token Session: " + user.toString())
+        Redirect(routes.Restricted.index()).withSession("username" -> user._1)
+      }
     )
   }
 }
