@@ -16,8 +16,6 @@ case class User(
 object User {
 
   def create(user: User): Boolean = {
-//    val authyUser = User("panderson", "foo", "panderson61@yahoo.com", "1", "7146146687", "38131306", "123")
-//    val user.username = "panderson"
     //
     val myUnit = UserList.upsertUser(user.username, user)
 

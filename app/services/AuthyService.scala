@@ -21,6 +21,8 @@ object AuthyService {
   private[this] val VIA = "via"
   private[this] val LOCALE = "locale"
   private[this] val VERIFICATION_CODE = "verification_code"
+  private[this] val MESSAGE = "message"
+  private[this] val SECONDS_TO_EXPIRE = "seconds_to_expire"
 
   //private[this] val email = play.Play.application.configuration.getString("panderson@avetta.com")
   private[this] val email = "panderson61@yahoo.com"
@@ -160,7 +162,7 @@ object AuthyService {
         val myMessage = trimstr((authyResponse \ "message").get.toString())
         val myToken = trimstr((authyResponse \ "token").get.toString())
 
-        println("resp:" + mySuccess + ":" + myMessage + ":" + myToken)
+        println("check sms resp:" + mySuccess + ":" + myMessage + ":" + myToken)
 
         //AuthyCheckSMSTokenResponse(
         //  success = (authyResponse \ "success").get.toString(),
@@ -181,6 +183,59 @@ object AuthyService {
         )
       }
     }
+  }
+
+  def authySendOneTouch(authyData: AuthySendOneTouchRequest): AuthySendOneTouchResponse = {
+    val authySendOneTouchUrl = authyUrl + "/onetouch/json/users/" + authyData.authyId + "/approval_requests"
+    println("Calling " + authySendOneTouchUrl.toString())
+
+    val nameValuePairs = Map(
+      (MESSAGE, Seq(authyData.message)),
+      (SECONDS_TO_EXPIRE, Seq(authyData.secondsToExpire))
+    )
+
+    val authyFuture = WS.url(authySendOneTouchUrl)
+      .withHeaders(("X-Authy-API-Key", authyApiKey))
+      .withRequestTimeout(authyTimeout)
+      .post(nameValuePairs)
+
+    val authySendOneTouchResponse = Await.result(authyFuture, authyTimeout)
+    println(authySendOneTouchResponse.status.toString())
+    println(authySendOneTouchResponse.body.toString())
+
+    authySendOneTouchResponse.status match {
+      case 200 => {
+        val authyResponse = Json.parse(authySendOneTouchResponse.body)
+        val mySuccess = trimstr((authyResponse \ "success").get.toString())
+        val myUuid = trimstr((authyResponse \ "approval_request" \ "uuid").get.toString())
+        println("resp:" + mySuccess + ":" + myUuid)
+
+        AuthySendOneTouchResponse(
+          mySuccess,
+          myUuid
+        )
+      }
+      case _ => {
+        AuthySendOneTouchResponse(
+          success = "false",
+          uuid = "9876543210"
+        )
+      }
+    }
+  }
+
+  def authyCheckOneTouch(authyBody: String) : String = {
+    println("CheckOneTouch: " + authyBody)
+    val authyResponse = Json.parse(authyResponse)
+    val myAuthyId = trimstr((authyResponse \ "authy_id").get.toString())
+    val myDeviceUuid = trimstr((authyResponse \ "device_uuid").get.toString())
+    val myStatus = trimstr((authyResponse \ "status").get.toString())
+    println("ID: " + myAuthyId + "UUID: " + myDeviceUuid + "Status: " + myStatus)
+    authyRequestValidator
+  }
+
+  def authyRequestValidator(): String = {
+    "true"
   }
 
   private def parseResults(response: String): Map[String, String] = {

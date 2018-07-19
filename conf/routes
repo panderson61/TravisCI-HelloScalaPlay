@@ -26,4 +26,6 @@ GET     /authyservice/v1/token      controllers.Token.getTokenForm
 POST    /authyservice/v1/token      controllers.Token.postTokenForm
 GET     /authyservice/v1/userreg    controllers.AuthyUserRegistration.getUserRegistrationForm
 POST    /authyservice/v1/userreg    controllers.AuthyUserRegistration.postUserRegistrationForm
-
+GET     /authyservice/v1/sendone    controllers.OneTouch.sendOneTouch
+GET     /authyservice/v1/onetouch   controllers.OneTouch.callBack
+POST    /authyservice/v1/onetouch   controllers.OneTouch.callBack
