@@ -27,7 +27,7 @@ object User {
     val myOptionUser = findByUsername(username)
     // TODO fix ugliness
     val myUser = myOptionUser.getOrElse(User("","","","","","",""))
-    println("found user with:" + myUser.phoneNumber)
+    println("found user " + myUser.username + " with phone: " + myUser.phoneNumber + " and useAuthy: " + myUser.useAuthy)
     password match {
       case myUser.password => Some(myUser)
       case _ => None

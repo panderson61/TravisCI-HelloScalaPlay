@@ -226,15 +226,15 @@ object AuthyService {
 
   def authyCheckOneTouch(authyBody: String) : String = {
     println("CheckOneTouch: " + authyBody)
-    val authyResponse = Json.parse(authyResponse)
+    val authyResponse = Json.parse(authyBody)
     val myAuthyId = trimstr((authyResponse \ "authy_id").get.toString())
     val myDeviceUuid = trimstr((authyResponse \ "device_uuid").get.toString())
     val myStatus = trimstr((authyResponse \ "status").get.toString())
     println("ID: " + myAuthyId + "UUID: " + myDeviceUuid + "Status: " + myStatus)
-    authyRequestValidator
+    authyRequestValidator(myAuthyId, myDeviceUuid, myStatus)
   }
 
-  def authyRequestValidator(): String = {
+  def authyRequestValidator(authyId: String, Uuid: String, status: String): String = {
     "true"
   }
 

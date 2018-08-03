@@ -25,16 +25,17 @@ class AuthyUserRegistration extends Controller {
   val userRegistrationForm = Form(
     tuple(
       "username" -> nonEmptyText,
-      "cellphone" -> nonEmptyText,
+      "cellphone" -> text(minLength = 10),
       "country_code" -> nonEmptyText,
-      "email" -> nonEmptyText,
-      "password" -> nonEmptyText,
+      "email" -> email,
+      "password" -> text(minLength = 3),
       "useAuthy" -> nonEmptyText
     ) verifying ("Invalid entry", result => result match {
       case (username, cellphone, country_code, email, password, useAuthy) =>
 
         println("verifying userRegistrationForm with username: " + username)
 //        User.findByUsername(username).exists
+        // TODO fix validation
         true
     })
   )
@@ -48,8 +49,8 @@ class AuthyUserRegistration extends Controller {
       formWithErrors => BadRequest(html.userregistration(formWithErrors)),
       value => {
         val (username, cellphone, country_code, email, password, useAuthy) = userRegistrationForm.bindFromRequest.get
-        println("Registering user: " + username + ", " + cellphone + ", " + country_code + ", " + email + ", <pw>, " + useAuthy)
-        if (useAuthy == "true") {
+        println("Registering user: " + username + ", " + email + ", " + country_code + cellphone + ", " + useAuthy)
+        if (useAuthy == "smstoken") {
           val authyData = AuthyUserRegistrationRequest(username, password, email, cellphone, country_code, useAuthy)
           val authyResponse = AuthyService.authyUserRegistration(authyData)
         }

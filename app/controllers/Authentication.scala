@@ -18,8 +18,8 @@ class Authentication extends Controller {
   //)
   val loginForm = Form(
     tuple(
-      "username" -> text,
-      "password" -> text
+      "username" -> nonEmptyText,
+      "password" -> nonEmptyText
     ) verifying ("Invalid username or password", result => result match {
       case (username, password) => User.authenticate(username, password).isDefined
     })
@@ -50,7 +50,16 @@ class Authentication extends Controller {
       user => {
         val mySessionToken = user._1
         println("Login session: " + user.toString() + "and token: " + mySessionToken)
-        Redirect(routes.Restricted.index()).withSession("username" -> mySessionToken)
+        val myOptionUser = User.findByUsername(mySessionToken.toString)
+        val myUser = myOptionUser.getOrElse(User("","","","","","",""))
+        val myUseAuthy = myUser.useAuthy.toString
+        println("UseAuthy is: " + myUseAuthy)
+        val myNext = myUseAuthy match {
+          case "smstoken" => routes.Token.sendToken()
+          case "false" => routes.Restricted.index()
+          case _ => routes.Authentication.logout()
+        }
+        Redirect(myNext).withSession("username" -> mySessionToken)
       }
     )
   }

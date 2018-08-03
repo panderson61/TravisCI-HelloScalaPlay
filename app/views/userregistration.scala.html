@@ -36,7 +36,16 @@
     <input type="password" name="password" id="password" placeholder="Password" value="@form("password").value">
 </p>
 <p>
+    <!--
     <input type="useAuthy" name="useAuthy" id="useAuthy" placeholder="Use Authy?" value="@form("useAuthy").value">
+    -->
+    <select name="useAuthy" id="useAuthy">
+        <option value="false">Password</option>
+        <option value="smstoken">SMS Token</option>
+        <option value="totp">Authy App</option>
+        <option value="onetouch">One Touch</option>
+        <option value="phone">Phone Call</option>
+    </select>
 </p>
 <p>
     <button type="submit" id="submitbutton">Submit</button>
